@@ -1,14 +1,12 @@
-import { StyleSheet, TouchableOpacity, View, Text, ImageBackground, Image, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, ImageBackground, Image, SafeAreaView } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { useNavigation } from '@react-navigation/native';
-
-const { width, height } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const navigation = useNavigation();
 
   const handlePress = () => {
-    navigation.navigate('Login');
+    navigation.navigate('Usuario');
   };
 
   return (
@@ -22,14 +20,11 @@ export default function HomeScreen() {
           <View style={styles.contentContainer}>
             <View style={styles.logoTamaño}>
               <Image
-                source={require('/RN4/rn4/assets/images/copa.png')}
+                source={require('/RN4/rn4/assets/images/logo-copa.png')}
                 style={styles.logo}
                 resizeMode="contain"
               />
             </View>
-            <ThemedText type="title" style={styles.title}>
-              ESTANGA <Text style={styles.estangaText}>LEAGUE</Text>
-            </ThemedText>
             <ThemedText style={styles.text}>
               Disfruta de la Mejor Liga del Fútbol Mundial dentro del Terreno de Juego Mas Prestigioso.
             </ThemedText>
@@ -53,7 +48,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(0,15,44,0.7)',
+    backgroundColor: 'rgba(0,15,20,0.8)',
   },
   contentContainer: {
     flex: 1,
@@ -62,7 +57,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logoTamaño: {
-    width: 150,
+    width: 200,
     height:175,
     justifyContent: 'center',
     alignItems: 'center',
@@ -71,13 +66,6 @@ const styles = StyleSheet.create({
   logo: {
     width: '100%',
     height: '100%',
-  },
-  title: {
-    fontSize: 33,
-    fontWeight: '',
-    color: 'white',
-    textAlign: 'center',
-    marginBottom: 16,
   },
   estangaText: {
     color: '#00B7ED',
