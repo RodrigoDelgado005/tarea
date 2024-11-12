@@ -1,65 +1,56 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, TextInput, Alert, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TextInput, Alert, StyleSheet, TouchableOpacity, Text, Image, ImageBackground } from 'react-native';
 
 const Seguidor = () => {
     const navigation = useNavigation();
-    const [UserName, setUserName] = useState(''); 
-    const [UserEmail, setUserEmail] = useState('');
-    const [UserPw, setUserPw] = useState('');
-    const [iniciarSesion, setiniciarSesion] = useState(true);
-     
+    const [nombreUsuario, setNombreUsuario] = useState('');
+    const [correoUsuario, setCorreoUsuario] = useState('');
+    const [contrasenaUsuario, setContrasenaUsuario] = useState('');
+    const [modoIniciarSesion, setModoIniciarSesion] = useState(true);
 
-    // Función para manejar el envío del formulario
-    const handleSubmit = async () => {
-        if (iniciarSesion) {
-            // Valida los datos antes de enviar
-            if (!UserEmail || !UserPw) {
+    const manejarEnvio = async () => {
+        if (modoIniciarSesion) {
+            if (!correoUsuario || !contrasenaUsuario) {
                 Alert.alert("Por favor, completa todos los campos.");
                 return;
             }
         } else {
-            if (!UserName || !UserEmail || !UserPw) {
+            if (!nombreUsuario || !correoUsuario || !contrasenaUsuario) {
                 Alert.alert("Por favor, completa todos los campos.");
                 return;
             }
         }
-        // url según el modo 
-        const urlSolicitud = iniciarSesion ? 'http://192.168.1.48/rn4/Login.php' : 'http://192.168.1.48/rn4/SignUp.php';
+        
+        const urlSolicitud = modoIniciarSesion ? 'http://10.0.0.42/rn4/Login.php' : 'http://10.0.0.42/rn4/SignUp.php';
 
         try {
-            // Realiza la solicitud POST a la url 
-            const response = await fetch(urlSolicitud, {
+            const respuesta = await fetch(urlSolicitud, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    // Envia los datos del usuario dependiendo si esta en registro o inicio de sesión
-                    UserName: iniciarSesion ? undefined : UserName,
-                    UserEmail: UserEmail,
-                    UserPw: UserPw
-                })
+                    UserName: modoIniciarSesion ? undefined : nombreUsuario,
+                    UserEmail: correoUsuario,
+                    UserPw: contrasenaUsuario,
+                }),
             });
 
-            // procesa la respuesta JSON
-            const data = await response.json();
+            const datos = await respuesta.json();
 
-            // maneja la respuesta y muestra un mensaje según sea el caso
-            if (iniciarSesion) {
-                if (data.success === true) {
+            if (modoIniciarSesion) {
+                if (datos.success === true) {
                     Alert.alert("Bienvenido de vuelta");
-                    navigation.navigate('Estangasions'); 
+                    navigation.navigate('Estangasions');
                 } else {
                     Alert.alert("El email o la contraseña son incorrectos. Inténtalo de nuevo.");
                 }
             } else {
-                if (data.Mensaje) {
-                    Alert.alert(data.Mensaje);
+                if (datos.Mensaje) {
+                    Alert.alert(datos.Mensaje);
                 } else {
-                    Alert.alert("Ya podes comenzar a usar nuestra app.");
-                    navigation.navigate('Estangasions'); 
+                    Alert.alert("Ya puedes comenzar a usar nuestra app.");
+                    navigation.navigate('Estangasions');
                 }
             }
         } catch (error) {
@@ -68,78 +59,87 @@ const Seguidor = () => {
         }
     };
 
-    // Función para cambiar entre modos de inicio de sesión y registro
     const cambiarModo = () => {
-        setiniciarSesion(prevMode => !prevMode);
-        setUserName('');
-        setUserEmail('');
-        setUserPw('');
+        setModoIniciarSesion(prevModo => !prevModo);
+        setNombreUsuario('');
+        setCorreoUsuario('');
+        setContrasenaUsuario('');
     };
 
     return (
-        // Componente principal con el formulario y botones para cambiar entre modos
-        <View style={styles.containerFondo}>
-            <View style={styles.container}>
-                <Image
-                    source={require('C:/RN4/rn4/assets/images/copa.png')}
-                    style={styles.logo}
-                />
-
-                {!iniciarSesion && (
-                    <TextInput
-                        placeholder="Nombre de usuario"
-                        value={UserName}
-                        onChangeText={setUserName}
-                        style={styles.input}
-                        placeholderTextColor="#FFFFFF" 
+        <ImageBackground
+            source={require('C:/RN4/rn4/assets/images/background.jpg')}
+            style={estilos.fondo}
+            resizeMode="cover"
+        >
+            <View style={estilos.contenedor}>
+                <View style={estilos.contenedorFormulario}>
+                    <Image
+                        source={require('C:/RN4/rn4/assets/images/copa.png')}
+                        style={estilos.logo}
                     />
-                )}
-                <TextInput
-                    placeholder="Email"
-                    value={UserEmail}
-                    onChangeText={setUserEmail}
-                    keyboardType="email-address"
-                    style={styles.input}
-                    placeholderTextColor="#FFFFFF"
-                />
-                <TextInput
-                    placeholder="Contraseña"
-                    value={UserPw}
-                    onChangeText={setUserPw}
-                    secureTextEntry
-                    style={styles.input}
-                    placeholderTextColor="#FFFFFF"
-                />
 
-                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                    <Text style={styles.buttonText}>{iniciarSesion ? "Iniciar Sesión" : "Registrarse"}</Text>
-                </TouchableOpacity>
+                    {!modoIniciarSesion && (
+                        <TextInput
+                            placeholder="Nombre de usuario"
+                            value={nombreUsuario}
+                            onChangeText={setNombreUsuario}
+                            style={estilos.input}
+                            placeholderTextColor="#FFFFFF"
+                        />
+                    )}
 
-                <TouchableOpacity style={styles.modeButton} onPress={cambiarModo}>
-                    <Text style={styles.modeButtonText}>{`${iniciarSesion ? "Registrarse" : "Iniciar Sesión"}`}</Text>
-                </TouchableOpacity>
+                    <TextInput
+                        placeholder="Email"
+                        value={correoUsuario}
+                        onChangeText={setCorreoUsuario}
+                        keyboardType="email-address"
+                        style={estilos.input}
+                        placeholderTextColor="#FFFFFF"
+                    />
+                    <TextInput
+                        placeholder="Contraseña"
+                        value={contrasenaUsuario}
+                        onChangeText={setContrasenaUsuario}
+                        secureTextEntry
+                        style={estilos.input}
+                        placeholderTextColor="#FFFFFF"
+                    />
+
+                    <TouchableOpacity style={estilos.boton} onPress={manejarEnvio}>
+                        <Text style={estilos.textoBoton}>{modoIniciarSesion ? "Iniciar Sesión" : "Registrarse"}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={estilos.botonModo} onPress={cambiarModo}>
+                        <Text style={estilos.textoBotonModo}>{`${modoIniciarSesion ? "Registrarse" : "Iniciar Sesión"}`}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+        </ImageBackground>
     );
 };
 
-// Estilos para los componentes
-const styles = StyleSheet.create({
-    containerFondo: {
+const estilos = StyleSheet.create({
+    fondo: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
+    contenedor: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#121212', 
+        backgroundColor: 'rgba(18, 18, 18, 0.8)', 
     },
-    container: {
+    contenedorFormulario: {
         width: '90%',
         padding: 30,
         borderRadius: 25,
-        backgroundColor: '#2A2A2A',
+        backgroundColor: '#2A2A2A', 
     },
     logo: {
-        width: 175,
-        height: 110,
+        width: 150,
+        height: 142,
         alignSelf: 'center',
         marginBottom: 30,
     },
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 16,
     },
-    button: {
+    boton: {
         backgroundColor: '#4F8EF7', 
         paddingVertical: 15,
         borderRadius: 12,
@@ -160,20 +160,21 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginBottom: 25,
     },
-    modeButton: {
-        marginTop: 15,
-        alignSelf: 'center',
-    },
-    modeButtonText: {
-        color: '#4F8EF7',
-        fontSize: 16,
-        textAlign: 'center',
-        fontWeight: '600',
-    },
-    buttonText: {
+    textoBoton: {
         color: '#FFFFFF',
         fontSize: 18,
         fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    botonModo: {
+        marginTop: 10,
+        marginBottom: 20,
+        alignItems: 'center',
+    },
+    textoBotonModo: {
+        color: '#4F8EF7',
+        fontSize: 16,
+        textDecorationLine: 'underline',
         textAlign: 'center',
     },
 });

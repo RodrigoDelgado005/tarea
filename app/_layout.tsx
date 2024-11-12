@@ -29,6 +29,15 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="Usuario" options={{ headerShown: false }} />
+        <Stack.Screen name="TablaPosiciones" options={{ headerShown: false }} />
+        <Stack.Screen name="Fixture" options={{ headerShown: false }} />
+        <Stack.Screen name="Seguidor" options={{ headerShown: false }} />
+        <Stack.Screen name="Jugadores" options={{ headerShown: false }} />
+        <Stack.Screen name="Estadisticas" options={{ headerShown: false }} />
+        <Stack.Screen name="Estangasions" options={{ headerShown: false }} />
+        <Stack.Screen name="Administrador" options={{ headerShown: false }} />
+        <Stack.Screen name="AdministradorScreen" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

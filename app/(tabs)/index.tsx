@@ -2,34 +2,34 @@ import { StyleSheet, TouchableOpacity, View, Text, ImageBackground, Image, SafeA
 import { ThemedText } from '@/components/ThemedText';
 import { useNavigation } from '@react-navigation/native';
 
-export default function HomeScreen() {
-  const navigation = useNavigation();
+export default function PantallaInicio() {
+  const navegacion = useNavigation();
 
-  const handlePress = () => {
-    navigation.navigate('Usuario');
+  const alPresionar = () => {
+    navegacion.navigate('Usuario');
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={estilos.areaSegura}>
       <ImageBackground
         source={require('/RN4/rn4/assets/images/background.jpg')}
-        style={styles.background}
+        style={estilos.fondo}
         resizeMode="cover"
       >
-        <View style={styles.container}>
-          <View style={styles.contentContainer}>
-            <View style={styles.logoTamaño}>
+        <View style={estilos.contenedor}>
+          <View style={estilos.contenedorContenido}>
+            <View style={estilos.tamañoLogo}>
               <Image
-                source={require('/RN4/rn4/assets/images/logo-copa.png')}
-                style={styles.logo}
+                source={require('/RN4/rn4/assets/images/copa.png')}
+                style={estilos.logo}
                 resizeMode="contain"
               />
             </View>
-            <ThemedText style={styles.text}>
-              Disfruta de la Mejor Liga del Fútbol Mundial dentro del Terreno de Juego Mas Prestigioso.
+            <ThemedText style={estilos.texto}>
+              Disfruta de la Mejor Liga de Fútbol Mundial en el Terreno de Juego Más Prestigioso.
             </ThemedText>
-            <TouchableOpacity style={styles.button} onPress={handlePress}>
-              <Text style={styles.buttonText}>COMENZAR</Text>
+            <TouchableOpacity style={estilos.boton} onPress={alPresionar}>
+              <Text style={estilos.textoBoton}>COMENZAR</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -38,55 +38,52 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
+const estilos = StyleSheet.create({
+  areaSegura: {
     flex: 1,
   },
-  background: {
+  fondo: {
     flex: 1,
     width: '100%',
   },
-  container: {
+  contenedor: {
     flex: 1,
-    backgroundColor: 'rgba(0,15,20,0.8)',
+    backgroundColor: 'rgba(0, 0, 30, 0.7)', 
   },
-  contentContainer: {
+  contenedorContenido: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  logoTamaño: {
+  tamañoLogo: {
     width: 200,
-    height:175,
+    height: 175,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 19,
+    marginBottom: 30,
   },
   logo: {
     width: '100%',
     height: '100%',
   },
-  estangaText: {
-    color: '#00B7ED',
-  },
-  text: {
-    color: 'white',
-    fontSize: 17,
+  texto: {
+    color: '#FFFFFF',
+    fontSize: 18,
     textAlign: 'center',
-    marginBottom: 32,
-    paddingHorizontal: 10,
-    lineHeight: 24,
+    marginBottom: 30,
+    paddingHorizontal: 20,
+    lineHeight: 25,
   },
-  button: {
-    backgroundColor: '#00B7ED',
+  boton: {
+    backgroundColor: '#0052CC',
     paddingVertical: 15,
-    borderRadius: 25,
+    borderRadius: 30,
     width: '70%',
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 19,
+  textoBoton: {
+    color: '#FFFFFF',
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     letterSpacing: 2,
